@@ -20,15 +20,13 @@ public class Usuarios {
 
 		System.out.println("======================INICIO DOS REQUESTS======================");
 		given()
-			//.log().all()
-			//.filter(new RequestLoggingFilter())
+			.filter(new RequestLoggingFilter())
 			.filter(new ResponseLoggingFilter())
 		.when()
 			.get()
 		.then()
-			//.log().all()
 			.statusCode(200)
-			.body("quantidade", equalTo(354));
+			.body("quantidade", equalTo(298));
 		
 		System.out.println("======================FIM DOS REQUESTS======================");
 	}
@@ -43,16 +41,14 @@ public class Usuarios {
 
 		System.out.println("======================INICIO DOS REQUESTS======================");
 		given()
-			//.log().all()
 			.filter(new RequestLoggingFilter())
 			.filter(new ResponseLoggingFilter())
 		.when()
-			.get("/0DlgwB2rgxJPsn7r")
+			.get("/0J4JA3RSXjoMNg0A")
 		.then()
-			//.log().all()
 			.statusCode(200)
 			.body("password", equalTo("teste"))
-			.body("administrador", equalTo("false"));
+			.body("administrador", equalTo("true"));
 		
 		System.out.println("======================FIM DOS REQUESTS======================");
 	}
