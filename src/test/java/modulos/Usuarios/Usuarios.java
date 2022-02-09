@@ -10,7 +10,6 @@ import org.junit.Test;
 import io.restassured.filter.log.RequestLoggingFilter;
 import io.restassured.filter.log.ResponseLoggingFilter;
 
-
 public class Usuarios {
 	
 	@Test
@@ -30,7 +29,7 @@ public class Usuarios {
 		.then()
 			//.log().all()
 			.statusCode(200)
-			.body("quantidade", equalTo(354));
+			.body("quantidade", equalTo(63));
 		
 		System.out.println("======================FIM DOS REQUESTS======================");
 	}
