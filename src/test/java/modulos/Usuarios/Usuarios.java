@@ -3,6 +3,7 @@ package modulos.Usuarios;
 import static io.restassured.RestAssured.*;
 import static org.hamcrest.CoreMatchers.*;
 
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import io.restassured.filter.log.RequestLoggingFilter;
@@ -11,12 +12,14 @@ import io.restassured.filter.log.ResponseLoggingFilter;
 
 public class Usuarios {
 	
-	@Test
-	public void testListarUsuariosCadastrados() {
-		
-		// Configurando os dados basicos da requisicao
+	@BeforeClass
+	public static void setup() {
 		baseURI = "https://serverest.dev";
 		basePath = "/usuarios";
+	}
+	
+	@Test
+	public void testListarUsuariosCadastrados() {
 
 		System.out.println("======================INICIO DOS REQUESTS======================");
 		given()
@@ -34,10 +37,6 @@ public class Usuarios {
 	
 	@Test
 	public void testListarUsuariosCadastradosPorID() {
-		
-		// Configurando os dados basicos da requisicao
-		baseURI = "https://serverest.dev";
-		basePath = "/usuarios";
 
 		System.out.println("======================INICIO DOS REQUESTS======================");
 		given()
@@ -55,9 +54,7 @@ public class Usuarios {
 	
 	@Test
 	public void testListarTodosUsuarios() {
-		baseURI = "https://serverest.dev";
-		basePath = "/usuarios";
-		
+
 		System.out.println("===============================INÍCIO DOS REQUESTS==================================");
 		
 		given()
@@ -74,13 +71,11 @@ public class Usuarios {
 	
 	@Test
 	public void testListarUsuariosPorID() {
-		baseURI = "https://serverest.dev";
-		basePath = "/usuarios/";
 		
 		given()
 			.filter(new RequestLoggingFilter())
 			.filter(new ResponseLoggingFilter())
-			.pathParam("_id", "zvec4bEXFr6osgk5")
+			.pathParam("_id", "zH77859afSAeNwMH")
 		.when()
 			.get("{_id}")
 		.then()
@@ -90,8 +85,6 @@ public class Usuarios {
 	
 	@Test
 	public void testListarUsuariosPorIDInexistente() {
-		baseURI = "https://serverest.dev";
-		basePath = "/usuarios/";
 		
 		given()
 			.filter(new RequestLoggingFilter())
@@ -107,8 +100,6 @@ public class Usuarios {
 	
 	@Test
 	public void testListarUsuarioPorNome() {
-		baseURI = "https://serverest.dev";
-		basePath = "/usuarios/";
 		
 		given()
 			.filter(new RequestLoggingFilter())
@@ -124,8 +115,6 @@ public class Usuarios {
 	
 	@Test
 	public void testListarUsuarioPorNomeInexistente() {
-		baseURI = "https://serverest.dev";
-		basePath = "/usuarios/";
 		
 		given()
 			.filter(new RequestLoggingFilter())
@@ -141,8 +130,6 @@ public class Usuarios {
 
 	@Test
 	public void testListarUsuarioPorEmail() {
-		baseURI = "https://serverest.dev";
-		basePath = "/usuarios/";
 		
 		given()
 			.filter(new RequestLoggingFilter())
@@ -160,8 +147,6 @@ public class Usuarios {
 	
 	@Test
 	public void testListarUsuarioPorPassword() {
-		baseURI = "https://serverest.dev";
-		basePath = "/usuarios/";
 		
 		given()
 			.filter(new RequestLoggingFilter())
@@ -177,8 +162,6 @@ public class Usuarios {
 	
 	@Test
 	public void testListarUsuarioPorAdministrador() {
-		baseURI = "https://serverest.dev";
-		basePath = "/usuarios/";
 		
 		given()
 			.filter(new RequestLoggingFilter())
@@ -194,9 +177,7 @@ public class Usuarios {
 	
 	@Test
 	public void testListarUsuarioPorIDNomeEmailPasswordEAdministrador() {
-		baseURI = "https://serverest.dev";
-		basePath = "/usuarios/";
-		
+
 		given()
 			.filter(new RequestLoggingFilter())
 			.filter(new ResponseLoggingFilter())
