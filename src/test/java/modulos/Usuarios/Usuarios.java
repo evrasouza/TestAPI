@@ -20,6 +20,7 @@ public class Usuarios {
 		basePath = "/usuarios";
 
 		System.out.println("======================INICIO DOS REQUESTS======================");
+		
 		given()
 			//.log().all()
 			//.filter(new RequestLoggingFilter())
