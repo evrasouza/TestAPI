@@ -30,7 +30,7 @@ public class Usuarios {
 		.then()
 			//.log().all()
 			.statusCode(200)
-			.body("quantidade", equalTo(63));
+			.body("quantidade", equalTo(1));
 		
 		System.out.println("======================FIM DOS REQUESTS======================");
 	}
@@ -49,12 +49,12 @@ public class Usuarios {
 			.filter(new RequestLoggingFilter())
 			.filter(new ResponseLoggingFilter())
 		.when()
-			.get("/0DlgwB2rgxJPsn7r")
+			.get("/0uxuPY0cbmQhpEz1")
 		.then()
 			//.log().all()
 			.statusCode(200)
 			.body("password", equalTo("teste"))
-			.body("administrador", equalTo("false"));
+			.body("administrador", equalTo("true"));
 		
 		System.out.println("======================FIM DOS REQUESTS======================");
 	}
