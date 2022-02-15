@@ -1,8 +1,8 @@
 package modulos.Carrinhos;
 
-import org.junit.BeforeClass;
 import org.junit.Test;
 
+import POJO.LoginPojo;
 import io.restassured.filter.log.RequestLoggingFilter;
 import io.restassured.filter.log.ResponseLoggingFilter;
 import io.restassured.http.ContentType;
@@ -13,11 +13,6 @@ import static org.hamcrest.CoreMatchers.*;
 public class Carrinhos {
 	
 	private static String token;
-	
-	@BeforeClass
-	public static void setup() {
-		baseURI = "https://serverest.dev";
-	}
 	
 	@Test
 	public void testListarTodosCarrinhosCadastrados() {
@@ -71,11 +66,15 @@ public class Carrinhos {
 		baseURI = "https://serverest.dev";			
 		System.out.println("===============================INÍCIO DOS REQUESTS==================================");	
 		
+		LoginPojo usuario = new LoginPojo();
+		usuario.setEmail("fulanoqa@teste.com");
+		usuario.setPassword("teste");
+		
 		token = given()
 			.filter(new RequestLoggingFilter())
 			.filter(new ResponseLoggingFilter())
 			.contentType(ContentType.JSON)
-			.body("	{\"email\": \"fulano@qa.com\",\"password\": \"teste\"}\r\n")
+			.body(usuario)
 		.when()
 			.post("/login")
 		.then()

@@ -6,267 +6,216 @@ import static org.hamcrest.CoreMatchers.*;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.junit.BeforeClass;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
+import org.junit.runners.MethodSorters;
 
+import Core.BaseTest;
+import POJO.UsuarioPojo;
 import io.restassured.filter.log.RequestLoggingFilter;
 import io.restassured.filter.log.ResponseLoggingFilter;
-import io.restassured.http.ContentType;
 
-
-public class Usuarios {
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
+public class Usuarios extends BaseTest{
 	
 	private static Integer qtde;
 	private static String email = "email" + System.nanoTime() + "@teste.com";
+	private static String nome = "Natalia Teste";
+	private static String password = "Teste";
+	private static String administrador = "true";
+	private static String ID_Usuario;
 	
-	@BeforeClass
-	public static void setup() {
-		baseURI = "https://serverest.dev";
-		basePath = "/usuarios";
+	@Test
+	public void t01_testCadastrarNovoUsuario() {
+		UsuarioPojo usuario = getCadastroUsuarioValido();
+		ID_Usuario =
+		given()	
+			.filter(new RequestLoggingFilter())
+			.filter(new ResponseLoggingFilter())	
+			.body(usuario)
+		.when()
+			.post("/usuarios")
+		.then()
+			.statusCode(201)
+			.body("message", is("Cadastro realizado com sucesso"))
+			.body("_id", is(notNullValue()))
+			.extract().path("_id")
+		;
 	}
 	
 	@Test
-	public void testListarTodosUsuarios() {
-		System.out.println("===============================INÍCIO DOS REQUESTS==================================");		
-		 qtde = given()
-			.filter(new RequestLoggingFilter())
-			.filter(new ResponseLoggingFilter())
+	public void t02_testAlterarEmailUsuario() {
+		UsuarioPojo usuario = getCadastroUsuarioValido();
+		usuario.setEmail("alterado" + email);
+		given()
+			.pathParam("_id", ID_Usuario)
+			.body(usuario)
 		.when()
-			.get()
+			.put("/usuarios/{_id}")
 		.then()
 			.statusCode(200)
-			.extract()
-			.path("quantidade")
+			.body("message", is("Registro alterado com sucesso"))
+		;
+	}	
+	
+	@Test
+	public void t03_testCadastrarUsuarioComEmailJaCadastrado() {
+		UsuarioPojo usuario = getCadastroUsuarioValido();
+		usuario.setEmail("alterado" + email);
+		given()
+			.body(usuario)
+		.when()
+			.post("/usuarios")
+		.then()
+			.statusCode(400)
+			.body("message", is("Este email já está sendo usado"))
+		;
+	}
+	
+	@Test
+	public void t04_testCadastrarUsuarioComEmailInvalido() {
+		UsuarioPojo usuario = getCadastroUsuarioValido();
+		usuario.setEmail("email_invalido.com");
+		given()
+			.body(usuario)
+		.when()
+			.post("/usuarios")
+		.then()
+			.statusCode(400)
+			.body("email", is("email deve ser um email válido"))
+		;
+	}
+	
+	@Test
+	public void t05_testListarTodosUsuarios() {
+		 qtde = given()
+		.when()
+			.get("/usuarios")
+		.then()
+			.statusCode(200)
+			.extract().path("quantidade")
 		;	
-		System.out.println("===============================FIM DOS REQUESTS==================================");
-
-		System.out.println("===============================INÍCIO DOS REQUESTS==================================");		
 		 given()
-			.filter(new RequestLoggingFilter())
-			.filter(new ResponseLoggingFilter())
 		 .when()
-		 	.get()
+		 	.get("/usuarios")
 		 .then()
 		 	.body("quantidade", is(qtde))
 		 ;
-		System.out.println("===============================FIM DOS REQUESTS==================================");
 	}
 	
 	@Test
-	public void testListarUsuariosCadastradosPorID() {
-
-		System.out.println("======================INICIO DOS REQUESTS======================");
+	public void t06_testListarUsuariosCadastradosPorID() {
 		given()
-			.filter(new RequestLoggingFilter())
-			.filter(new ResponseLoggingFilter())
+			.pathParam("_id", ID_Usuario)
 		.when()
-			.get("/9LBET1VLsE7K0GUX")
+			.get("/usuarios/{_id}")
 		.then()
 			.statusCode(200)
-			.body("password", equalTo("teste"))
+			.body("password", equalTo("Teste"))
 			.body("administrador", equalTo("true"))
 		;		
-		System.out.println("======================FIM DOS REQUESTS======================");
 	}
-	
+		
 	@Test
-	public void testListarUsuariosPorID() {
-		System.out.println("===============================INÍCIO DOS REQUESTS==================================");
+	public void t07_testListarUsuariosPorIDInexistente() {
 		given()
-			.filter(new RequestLoggingFilter())
-			.filter(new ResponseLoggingFilter())
-			.pathParam("_id", "9YhaiKZCjuzi0xiH")
+			.pathParam("_id", ID_Usuario + "021")
 		.when()
-			.get("{_id}")
-		.then()
-			.statusCode(200)
-		;
-		System.out.println("===============================FIM DOS REQUESTS==================================");
-	}
-	
-	@Test
-	public void testListarUsuariosPorIDInexistente() {
-		System.out.println("===============================INÍCIO DOS REQUESTS==================================");
-		given()
-			.filter(new RequestLoggingFilter())
-			.filter(new ResponseLoggingFilter())
-			.pathParam("_id", "zvec4bEXFr6osg88")
-		.when()
-			.get("{_id}")
+			.get("/usuarios/{_id}")
 		.then()
 			.statusCode(400)
 			.body("message", equalTo("Usuário não encontrado"))
 		;
-		System.out.println("===============================FIM DOS REQUESTS==================================");
 	}
 	
 	@Test
-	public void testListarUsuarioPorNome() {
-		System.out.println("===============================INÍCIO DOS REQUESTS==================================");
+	public void t08_testListarUsuarioPorNome() {
 		given()
-			.filter(new RequestLoggingFilter())
-			.filter(new ResponseLoggingFilter())
-			.queryParam("nome", "Pokémon Ultra Moon")
+			.queryParam("nome", nome)
 		.when()
-			.get()
+			.get("/usuarios")
 		.then()
 			.statusCode(200)
-			.body("usuarios.nome", hasItems("Pokémon Ultra Moon"))
+			.body("usuarios.nome", hasItems(nome))
 		;
-		System.out.println("===============================FIM DOS REQUESTS==================================");
 	}
 	
 	@Test
-	public void testListarUsuarioPorNomeInexistente() {
-		System.out.println("===============================INÍCIO DOS REQUESTS==================================");
+	public void t09_testListarUsuarioPorNomeInexistente() {
 		given()
-			.filter(new RequestLoggingFilter())
-			.filter(new ResponseLoggingFilter())
-			.queryParam("nome", "Usuario Inexistente")
+			.queryParam("nome", nome + " Inexistente")
 		.when()
-			.get()
+			.get("/usuarios")
 		.then()
 			.statusCode(200)
 			.body("quantidade", is(0))
 		;
-		System.out.println("===============================FIM DOS REQUESTS==================================");
-
 	}
-
+	
 	@Test
-	public void testListarUsuarioPorEmail() {
-		System.out.println("===============================INÍCIO DOS REQUESTS==================================");
+	public void t10_testListarUsuarioPorEmail() {
 		given()
-			.filter(new RequestLoggingFilter())
-			.filter(new ResponseLoggingFilter())
-			.queryParam("email", "herman.cummings@schneider.net")
+			.queryParam("email", "alterado" + email)
 		.when()
-			.get()
+			.get("/usuarios")
 		.then()
 			.statusCode(200)
 			.body("quantidade", is(1))
-			.body("usuarios.email", hasItem("herman.cummings@schneider.net"))
-			.body("usuarios._id", hasItem("9l4MsVKlZz2shSjL"))
+			.body("usuarios.email", hasItem("alterado" + email))
+			.body("usuarios._id", hasItem(ID_Usuario))
 		;
-		System.out.println("===============================FIM DOS REQUESTS==================================");
 	}
 	
 	@Test
-	public void testListarUsuarioPorPassword() {
-		System.out.println("===============================INÍCIO DOS REQUESTS==================================");
+	public void t11_testListarUsuarioPorPassword() {
 		given()
-			.filter(new RequestLoggingFilter())
-			.filter(new ResponseLoggingFilter())
-			.queryParam("password", "teste")
+			.queryParam("password", password)
 		.when()
-			.get()
+			.get("/usuarios")
 		.then()
 			.statusCode(200)
-			.body("usuarios.password", hasItems("teste"))
+			.body("usuarios.password", hasItems(password))
 		;
-		System.out.println("===============================FIM DOS REQUESTS==================================");
 	}
 	
 	@Test
-	public void testListarUsuarioPorAdministrador() {
-		System.out.println("===============================INÍCIO DOS REQUESTS==================================");
+	public void t12_testListarUsuarioPorAdministrador() {
 		given()
-			.filter(new RequestLoggingFilter())
-			.filter(new ResponseLoggingFilter())
-			.queryParam("administrador", "true")
+			.queryParam("administrador", administrador)
 		.when()
-			.get()
+			.get("/usuarios")
 		.then()
 			.statusCode(200)
 		;
-		System.out.println("===============================FIM DOS REQUESTS==================================");
 	}
-	
+
 	@Test
-	public void testListarUsuarioPorIDNomeEmailPasswordEAdministrador() {
-		System.out.println("===============================INÍCIO DOS REQUESTS==================================");
+	public void t13_testListarUsuarioPorNomeEmailPasswordEAdministrador() {
+		Map<String, String> usuario = new HashMap<String, String>();
+		usuario.put("nome", nome);
+		usuario.put("email", "alterado" + email);
+		usuario.put("password", password);
+		usuario.put("administrador", administrador);
 		given()
-			.filter(new RequestLoggingFilter())
-			.filter(new ResponseLoggingFilter())
-			.queryParam("_id", "9sGgelvpCljGoPd0")
-			.queryParam("nome", "Wolfenstein: The New Order")
-			.queryParam("email", "yong@hilpert.info")
-			.queryParam("password", "teste")
-			.queryParam("administrador", "true")
+			.queryParams(usuario)
 		.when()
-			.get()
+			.get("/usuarios")
 		.then()
 			.statusCode(200)
-			.body("usuarios.nome", hasItem("Wolfenstein: The New Order"))
-			.body("usuarios.email", hasItem("yong@hilpert.info"))
-			.body("usuarios.password", hasItem("teste"))
-			.body("usuarios.administrador", hasItem("true"))
-			.body("usuarios._id", hasItem("9sGgelvpCljGoPd0"))
+			.body("usuarios.nome", hasItem(nome))
+			.body("usuarios.email", hasItem("alterado" + email))
+			.body("usuarios.password", hasItem(password))
+			.body("usuarios.administrador", hasItem(administrador))
 		;	
-		System.out.println("===============================FIM DOS REQUESTS==================================");
 	}
-	
-	@Test
-	public void TestCadastrarNovoUsuario() {
-		System.out.println("===============================INÍCIO DOS REQUESTS==================================");
-		Map<String, String> login = new HashMap<String, String>();
-		login.put("nome","Julia da Silva");
-		login.put("email", email);
-		login.put("password", "teste");
-		login.put("administrador", "true");
-		given()
-			.filter(new RequestLoggingFilter())
-			.filter(new ResponseLoggingFilter())	
-			.contentType(ContentType.JSON)
-			.body(login)
-		.when()
-			.post()
-		.then()
-			.statusCode(201)
-			.contentType(ContentType.JSON)
-			.body("message", is("Cadastro realizado com sucesso"))
-		;
-		System.out.println("===============================FIM DOS REQUESTS==================================");
+
+	private UsuarioPojo getCadastroUsuarioValido(){
+		UsuarioPojo usuario = new UsuarioPojo();
+		usuario.setNome(nome);
+		usuario.setEmail(email);
+		usuario.setPassword(password);
+		usuario.setAdministrador(administrador);
+		return usuario;
 	}
-	
-	@Test
-	public void testCadastrarUsuarioComEmailInvalido() {
-		System.out.println("===============================INÍCIO DOS REQUESTS==================================");
-		Map<String, String> login = new HashMap<String, String>();
-		login.put("nome","Julia da Silva");
-		login.put("email", "email");
-		login.put("password", "teste");
-		login.put("administrador", "true");
-		given()
-			.filter(new RequestLoggingFilter())
-			.filter(new ResponseLoggingFilter())	
-			.contentType(ContentType.JSON)
-			.body(login)
-		.when()
-			.post()
-		.then()
-			.statusCode(400)
-			.contentType(ContentType.JSON)
-			.body("email", is("email deve ser um email válido"))
-		;
-		System.out.println("===============================FIM DOS REQUESTS==================================");
-	}
-		
-	@Test
-	public void testCadastrarUsuarioComEmailJaCadastrado() {
-		System.out.println("===============================INÍCIO DOS REQUESTS==================================");
-		given()
-			.filter(new RequestLoggingFilter())
-			.filter(new ResponseLoggingFilter())	
-			.contentType(ContentType.JSON)
-			.body("{\"nome\": \"Julia da Silva\", \"email\": \"natalia@qa.com.br\", \"password\": \"teste\", \"administrador\": \"true\"}")
-		.when()
-			.post()
-		.then()
-			.statusCode(400)
-			.contentType(ContentType.JSON)
-			.body("message", is("Este email já está sendo usado"))
-		;
-		System.out.println("===============================FIM DOS REQUESTS==================================");
-	}
+
 }
