@@ -2,16 +2,16 @@ package POJO;
 
 public class ProdutoPojo {
 	
-	private String nomeProduto;
+	private String nome;
 	private Integer preco;
 	private String descricao;
 	private Integer quantidade;
 	
-	public String getNomeProduto() {
-		return nomeProduto;
+	public String getNome() {
+		return nome;
 	}
-	public void setNomeProduto(String nomeProduto) {
-		this.nomeProduto = nomeProduto;
+	public void setNome(String nome) {
+		this.nome = nome;
 	}
 	public Integer getPreco() {
 		return preco;

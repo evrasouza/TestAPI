@@ -1,58 +1,34 @@
 package modulos.Login;
 
-import org.junit.BeforeClass;
 import org.junit.Test;
 
-import io.restassured.filter.log.RequestLoggingFilter;
-import io.restassured.filter.log.ResponseLoggingFilter;
-import io.restassured.http.ContentType;
+import Core.BaseTest;
+import POJO.LoginPojo;
+import io.restassured.RestAssured;
 
 import static io.restassured.RestAssured.*;
-import static org.hamcrest.CoreMatchers.*;
 
-public class Login {
+public class Login extends BaseTest {
 	
-	@BeforeClass
-	public static void setup() {
-		baseURI = "https://serverest.dev";
-		//basePath = "/login";
-	}
-	
+	private static String email = "email" + System.nanoTime() + "@teste.com";
+	private static String password = "Teste";
+	private static String token;
+
 	@Test
-	public void testeFazerLoginCadastrarUsuarios() {
-		System.out.println("======================INICIO DOS REQUESTS======================");
-		String token = 
+	public void testeFazerLogin() {
+		LoginPojo login = new LoginPojo();
+		login.setEmail(email);
+		login.setPassword(password);
+		
+		token = 
 		given()
-			.filter(new RequestLoggingFilter())
-			.filter(new ResponseLoggingFilter())
-			.contentType(ContentType.JSON)
-			.body("	{\"email\": \"fulano@qa.com\",\"password\": \"teste\"}\r\n")
+			.body(login)
 		.when()
 			.post("/login")
 		.then()
-			.extract()
-			.path("authorization")
-		;		
-		System.out.println("======================FIM DOS REQUESTS======================");
-		given()
-			.filter(new RequestLoggingFilter())
-			.filter(new ResponseLoggingFilter())
-			.contentType(ContentType.JSON)
-			.header("token", token)
-			.body("{\r\n"
-					+ "  \"nome\": \"Fulano Pedreira\",\r\n"
-					+ "  \"email\": \"fulanoli@qa.com.br\",\r\n"
-					+ "  \"password\": \"teste\",\r\n"
-					+ "  \"administrador\": \"true\"\r\n"
-					+ "}")
-		.when()
-			.post("/usuarios")
-		.then()
-			.statusCode(201)
-			.body("message", is("Cadastro realizado com sucesso"))
-			.body("_id", is(notNullValue()))
-		;
+			.extract().path("authorization")
+		;	
 		
-
+	 	RestAssured.requestSpecification.header("authorization", token);
 	}
 }
