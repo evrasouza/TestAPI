@@ -1,4 +1,4 @@
-package modulos.Login;
+package tests.Login;
 
 import org.junit.Test;
 

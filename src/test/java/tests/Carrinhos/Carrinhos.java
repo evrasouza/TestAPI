@@ -1,4 +1,4 @@
-package modulos.Carrinhos;
+package tests.Carrinhos;
 
 import org.junit.Test;
 
