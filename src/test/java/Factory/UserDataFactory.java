@@ -64,6 +64,18 @@ public class UserDataFactory {
         
         return user;
     }
+    
+    public UsersPojo userWithNoFields(){
+    	UsersPojo user = new UsersPojo();
+
+    	user.setNome("");
+		user.setEmail("");
+		user.setPassword("");
+		user.setAdministrador("");
+		
+        
+        return user;
+    }
 	
 
 }

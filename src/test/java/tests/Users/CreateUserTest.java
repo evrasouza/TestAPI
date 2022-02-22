@@ -29,9 +29,9 @@ public class CreateUserTest extends BaseTest{
 			.post("/usuarios")
 		.then()
 			.statusCode(201)
-			.body("message", is("Cadastro realizado com sucesso"))
-			.body("_id", is(notNullValue()))
-			.extract().path("_id");
+				.body("message", is("Cadastro realizado com sucesso"))
+				.body("_id", is(notNullValue()))
+					.extract().path("_id");
 	}
 	
 	@Test
@@ -45,9 +45,9 @@ public class CreateUserTest extends BaseTest{
 			.post("/usuarios")
 		.then()
 			.statusCode(201)
-			.body("message", is("Cadastro realizado com sucesso"))
-			.body("_id", is(notNullValue()))
-			.extract().path("_id");
+				.body("message", is("Cadastro realizado com sucesso"))
+				.body("_id", is(notNullValue()))
+					.extract().path("_id");
 	}
 	
 	@Test
@@ -61,7 +61,7 @@ public class CreateUserTest extends BaseTest{
 			.post("/usuarios")
 		.then()
 			.statusCode(400)
-			.body("administrador", is("administrador deve ser 'true' ou 'false'"));
+				.body("administrador", is("administrador deve ser 'true' ou 'false'"));
 	}
 	
 	@Test
@@ -75,7 +75,7 @@ public class CreateUserTest extends BaseTest{
 			.post("/usuarios")
 		.then()
 			.statusCode(400)
-			.body("administrador", is("administrador deve ser 'true' ou 'false'"));
+				.body("administrador", is("administrador deve ser 'true' ou 'false'"));
 	}
 	
 	@Test
@@ -88,7 +88,7 @@ public class CreateUserTest extends BaseTest{
 			.post("/usuarios")
 		.then()
 			.statusCode(400)
-			.body("administrador", is("administrador deve ser 'true' ou 'false'"));
+				.body("administrador", is("administrador deve ser 'true' ou 'false'"));
 	}
 	
 	@Test
@@ -101,7 +101,7 @@ public class CreateUserTest extends BaseTest{
 			.post("/usuarios")
 		.then()
 			.statusCode(400)
-			.body("email", is("email deve ser um email válido"));
+				.body("email", is("email deve ser um email válido"));
 	}
 	
 	@Test
@@ -115,7 +115,7 @@ public class CreateUserTest extends BaseTest{
 			.post("/usuarios")
 		.then()
 			.statusCode(400)
-			.body("nome", is("nome deve ser uma string"));
+				.body("nome", is("nome deve ser uma string"));
 	}
 	
 	@Test
@@ -128,7 +128,7 @@ public class CreateUserTest extends BaseTest{
 			.post("/usuarios")
 		.then()
 			.statusCode(400)
-			.body("nome", is("nome deve ser uma string"));
+				.body("nome", is("nome deve ser uma string"));
 	}
 	
 	@Test
@@ -143,7 +143,7 @@ public class CreateUserTest extends BaseTest{
 		.then()
 			.log().all()
 			.statusCode(400)
-			.body("password", is("password deve ser uma string"));
+				.body("password", is("password deve ser uma string"));
 	}
 	
 }
