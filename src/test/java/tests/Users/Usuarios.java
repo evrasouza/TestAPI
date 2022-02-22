@@ -1,7 +1,10 @@
-package tests.Usuarios;
+package tests.Users;
 
-import static io.restassured.RestAssured.*;
-import static org.hamcrest.CoreMatchers.*;
+import static io.restassured.RestAssured.given;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.hasItem;
+import static org.hamcrest.CoreMatchers.hasItems;
+import static org.hamcrest.CoreMatchers.is;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -11,8 +14,6 @@ import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
 import Core.BaseTest;
-import Factory.UserDataFactory;
-import POJO.UsersPojo;
 
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
@@ -23,37 +24,7 @@ public class Usuarios extends BaseTest{
 	private static String nome;
 	
 	@Test
-	public void t01_testCadastrarNovoUsuario() {
-		UsersPojo usuario = new UserDataFactory().userAdmin();		
-		ID_Usuario =
-		given()	
-			.body(usuario)
-		.when()
-			.post("/usuarios")
-		.then()
-			.statusCode(201)
-			.body("message", is("Cadastro realizado com sucesso"))
-			.body("_id", is(notNullValue()))
-			.extract().path("_id")
-		;
-	}
-	
-	@Test
-	public void t02_testCadastrarUsuarioComEmailInvalido() {
-		UsersPojo usuario = new UserDataFactory().userAdmin();		
-		usuario.setEmail("email_invalido.com");
-		given()
-			.body(usuario)
-		.when()
-			.post("/usuarios")
-		.then()
-			.statusCode(400)
-			.body("email", is("email deve ser um email válido"))
-		;
-	}
-	
-	@Test
-	public void t03_testListarTodosUsuarios() {
+	public void t04_testListarTodosUsuarios() {
 		 qtde = given()
 		.when()
 			.get("/usuarios")
@@ -70,7 +41,7 @@ public class Usuarios extends BaseTest{
 	}
 	
 	@Test
-	public void t04_testListarUsuariosCadastradosPorID() {
+	public void t05_testListarUsuariosCadastradosPorID() {
 		nome = given()
 			.pathParam("_id", ID_Usuario)
 		.when()
@@ -84,7 +55,7 @@ public class Usuarios extends BaseTest{
 	}
 		
 	@Test
-	public void t05_testListarUsuariosPorIDInexistente() {
+	public void t06_testListarUsuariosPorIDInexistente() {
 		given()
 			.pathParam("_id", ID_Usuario + "021")
 		.when()
@@ -96,7 +67,7 @@ public class Usuarios extends BaseTest{
 	}
 	
 	@Test
-	public void t06_testListarUsuarioPorNome() {
+	public void t07_testListarUsuarioPorNome() {
 		given()
 			.queryParam("nome", nome)
 		.when()
@@ -108,7 +79,7 @@ public class Usuarios extends BaseTest{
 	}
 	
 	@Test
-	public void t07_testListarUsuarioPorNomeInexistente() {
+	public void t08_testListarUsuarioPorNomeInexistente() {
 		given()
 			.queryParam("nome", nome + " Inexistente")
 		.when()
@@ -120,7 +91,7 @@ public class Usuarios extends BaseTest{
 	}
 	
 	@Test
-	public void t08_testListarUsuarioPorPassword() {
+	public void t09_testListarUsuarioPorPassword() {
 		given()
 			.queryParam("password", "teste")
 		.when()
@@ -132,7 +103,7 @@ public class Usuarios extends BaseTest{
 	}
 	
 	@Test
-	public void t09_testListarUsuarioPorAdministrador() {
+	public void t10_testListarUsuarioPorAdministrador() {
 		given()
 			.queryParam("administrador", "true")
 		.when()
@@ -143,7 +114,7 @@ public class Usuarios extends BaseTest{
 	}
 
 	@Test
-	public void t10_testListarUsuarioPorNomePasswordEAdministrador() {
+	public void t11_testListarUsuarioPorNomePasswordEAdministrador() {
 		Map<String, String> usuario = new HashMap<String, String>();
 		usuario.put("nome", nome);
 		usuario.put("password", "teste");

@@ -41,7 +41,7 @@ public class LoginDataFactory extends BaseTest{
 	}
 	
 	public void loginUser(){
-		UsersPojo usuario = new UserDataFactory().user();	
+		UsersPojo usuario = new UserDataFactory().userAdmin();	
 		given()	
 			.body(usuario)
 			.when()

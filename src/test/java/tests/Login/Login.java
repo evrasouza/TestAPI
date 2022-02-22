@@ -1,12 +1,12 @@
 package tests.Login;
 
+import static io.restassured.RestAssured.given;
+
 import org.junit.Test;
 
 import Core.BaseTest;
 import POJO.LoginPojo;
 import io.restassured.RestAssured;
-
-import static io.restassured.RestAssured.*;
 
 public class Login extends BaseTest {
 	

@@ -1,16 +1,11 @@
 package POJO;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-
+@Data
 public class UsersPojo extends LoginPojo {
-	@Getter
-	@Setter
-	private String nome;
-	@Getter
-	@Setter
-	private String administrador;
 
+	private String nome;
+	private String administrador;
 
 }

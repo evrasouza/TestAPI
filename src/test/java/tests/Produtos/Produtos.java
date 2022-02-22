@@ -221,7 +221,7 @@ public class Produtos extends BaseTest {
 	@Test
 	public void t13_testRotaExclusivaAdministrador() {
 		
-		UsersPojo usuario = new UserDataFactory().user();	
+		UsersPojo usuario = new UserDataFactory().userAdmin();	
 		email = usuario.getEmail();
 		password = usuario.getPassword();
 		
