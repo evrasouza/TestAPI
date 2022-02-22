@@ -1,4 +1,4 @@
-package tests.Carrinhos;
+package tests.ShopCart;
 
 import org.junit.Test;
 
@@ -10,7 +10,7 @@ import io.restassured.http.ContentType;
 import static io.restassured.RestAssured.*;
 import static org.hamcrest.CoreMatchers.*;
 
-public class Carrinhos {
+public class ShopCart {
 	
 	private static String token;
 	

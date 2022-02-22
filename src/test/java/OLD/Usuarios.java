@@ -1,4 +1,4 @@
-package tests.Refact;
+package OLD;
 
 import static io.restassured.RestAssured.*;
 import static org.hamcrest.CoreMatchers.*;
@@ -14,15 +14,13 @@ import Core.BaseTest;
 import Factory.UserDataFactory;
 import POJO.UsersPojo;
 
+
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class UsersRefact extends BaseTest{
+public class Usuarios extends BaseTest{
 	
 	private static Integer qtde;
 	private static String ID_Usuario;
 	private static String nome;
-	private static String email;
-	private static String password;
-	private static String administrador;
 	
 	@Test
 	public void t01_testCadastrarNovoUsuario() {
@@ -38,17 +36,12 @@ public class UsersRefact extends BaseTest{
 			.body("_id", is(notNullValue()))
 			.extract().path("_id")
 		;
-		
-		nome = usuario.getNome();
-		email = usuario.getEmail();
-		password = usuario.getPassword();
-		administrador = usuario.getAdministrador();
 	}
 	
 	@Test
 	public void t02_testCadastrarUsuarioComEmailInvalido() {
 		UsersPojo usuario = new UserDataFactory().userAdmin();		
-		usuario.setEmail(email + " invalido");
+		usuario.setEmail("email_invalido.com");
 		given()
 			.body(usuario)
 		.when()
@@ -60,25 +53,8 @@ public class UsersRefact extends BaseTest{
 	}
 	
 	@Test
-	public void t03_testCadastrarUsuarioComEmailJaCadastrado() {
-		Map<String, String> usuario = new HashMap<String, String>();
-		usuario.put("nome", nome);
-		usuario.put("email", email);
-		usuario.put("password", password);
-		usuario.put("administrador", administrador);
-		given()
-			.body(usuario)
-		.when()
-			.post("/usuarios")
-		.then()
-			.statusCode(400)
-			.body("message", is("Este email já está sendo usado"))
-		;
-	}
-	
-	@Test
-	public void t04_testListarTodosUsuarios() {
-		qtde = given()
+	public void t03_testListarTodosUsuarios() {
+		 qtde = given()
 		.when()
 			.get("/usuarios")
 		.then()
@@ -94,7 +70,7 @@ public class UsersRefact extends BaseTest{
 	}
 	
 	@Test
-	public void t05_testListarUsuariosCadastradosPorID() {
+	public void t04_testListarUsuariosCadastradosPorID() {
 		nome = given()
 			.pathParam("_id", ID_Usuario)
 		.when()
@@ -108,7 +84,7 @@ public class UsersRefact extends BaseTest{
 	}
 		
 	@Test
-	public void t06_testListarUsuariosPorIDInexistente() {
+	public void t05_testListarUsuariosPorIDInexistente() {
 		given()
 			.pathParam("_id", ID_Usuario + "021")
 		.when()
@@ -120,21 +96,7 @@ public class UsersRefact extends BaseTest{
 	}
 	
 	@Test
-	public void t07_testListarUsuarioPorEmail() {
-		given()
-			.queryParam("email", email)
-		.when()
-			.get("/usuarios")
-		.then()
-			.statusCode(200)
-			.body("quantidade", is(1))
-			.body("usuarios.email", hasItem(email))
-			.body("usuarios._id", hasItem(ID_Usuario))
-		;
-	}
-	
-	@Test
-	public void t08_testListarUsuarioPorNome() {
+	public void t06_testListarUsuarioPorNome() {
 		given()
 			.queryParam("nome", nome)
 		.when()
@@ -144,9 +106,9 @@ public class UsersRefact extends BaseTest{
 			.body("usuarios.nome", hasItems(nome))
 		;
 	}
-
+	
 	@Test
-	public void t09_testListarUsuarioPorNomeInexistente() {
+	public void t07_testListarUsuarioPorNomeInexistente() {
 		given()
 			.queryParam("nome", nome + " Inexistente")
 		.when()
@@ -158,21 +120,21 @@ public class UsersRefact extends BaseTest{
 	}
 	
 	@Test
-	public void t10_testListarUsuarioPorPassword() {
+	public void t08_testListarUsuarioPorPassword() {
 		given()
-			.queryParam("password", password)
+			.queryParam("password", "teste")
 		.when()
 			.get("/usuarios")
 		.then()
 			.statusCode(200)
-			.body("usuarios.password", hasItems(password))
+			.body("usuarios.password", hasItems("teste"))
 		;
 	}
 	
 	@Test
-	public void t11_testListarUsuarioPorAdministrador() {
+	public void t09_testListarUsuarioPorAdministrador() {
 		given()
-			.queryParam("administrador", administrador)
+			.queryParam("administrador", "true")
 		.when()
 			.get("/usuarios")
 		.then()
@@ -181,12 +143,11 @@ public class UsersRefact extends BaseTest{
 	}
 
 	@Test
-	public void t12_testListarUsuarioPorNomeEmailPasswordEAdministrador() {
+	public void t10_testListarUsuarioPorNomePasswordEAdministrador() {
 		Map<String, String> usuario = new HashMap<String, String>();
 		usuario.put("nome", nome);
-		usuario.put("email", email);
-		usuario.put("password", password);
-		usuario.put("administrador", administrador);
+		usuario.put("password", "teste");
+		usuario.put("administrador", "true");
 		given()
 			.queryParams(usuario)
 		.when()
@@ -194,10 +155,9 @@ public class UsersRefact extends BaseTest{
 		.then()
 			.statusCode(200)
 			.body("usuarios.nome", hasItem(nome))
-			.body("usuarios.email", hasItem(email))
-			.body("usuarios.password", hasItem(password))
-			.body("usuarios.administrador", hasItem(administrador))
+			.body("usuarios.password", hasItem("teste"))
+			.body("usuarios.administrador", hasItem("true"))
 		;	
 	}
-	
+
 }

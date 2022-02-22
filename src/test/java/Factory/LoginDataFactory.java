@@ -40,8 +40,8 @@ public class LoginDataFactory extends BaseTest{
 	RestAssured.requestSpecification.header("authorization", token);		
 	}
 	
-	public void loginUser(){
-		UsersPojo usuario = new UserDataFactory().user();	
+	public void userNotAdmin(){
+		UsersPojo usuario = new UserDataFactory().userNotAdmin();	
 		given()	
 			.body(usuario)
 			.when()
