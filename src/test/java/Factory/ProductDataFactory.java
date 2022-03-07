@@ -2,7 +2,7 @@ package Factory;
 
 import com.github.javafaker.Faker;
 
-import POJO.ProductsPojo;
+import Pojo.ProductsPojo;
 
 public class ProductDataFactory {	
 	

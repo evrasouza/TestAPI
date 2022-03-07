@@ -2,7 +2,7 @@ package tests.Carrinhos;
 
 import org.junit.Test;
 
-import POJO.LoginPojo;
+import Pojo.LoginPojo;
 import io.restassured.filter.log.RequestLoggingFilter;
 import io.restassured.filter.log.ResponseLoggingFilter;
 import io.restassured.http.ContentType;

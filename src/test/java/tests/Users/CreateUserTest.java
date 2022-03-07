@@ -6,9 +6,9 @@ import static org.hamcrest.CoreMatchers.notNullValue;
 
 import org.junit.Test;
 
-import Core.BaseTest;
 import Factory.UserDataFactory;
-import POJO.UsersPojo;
+import Pojo.UsersPojo;
+import Utils.BaseTest;
 import io.restassured.filter.log.RequestLoggingFilter;
 import io.restassured.filter.log.ResponseLoggingFilter;
 

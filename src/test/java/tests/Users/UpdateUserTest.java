@@ -7,9 +7,9 @@ import static org.hamcrest.CoreMatchers.notNullValue;
 import org.junit.Before;
 import org.junit.Test;
 
-import Core.BaseTest;
 import Factory.UserDataFactory;
-import POJO.UsersPojo;
+import Pojo.UsersPojo;
+import Utils.BaseTest;
 import Utils.UserUtil;
 
 public class UpdateUserTest extends BaseTest{

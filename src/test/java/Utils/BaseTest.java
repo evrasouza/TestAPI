@@ -1,4 +1,4 @@
-package Core;
+package Utils;
 
 import org.hamcrest.Matchers;
 import org.junit.BeforeClass;

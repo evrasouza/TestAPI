@@ -1,4 +1,4 @@
-package Core;
+package Utils;
 
 import io.restassured.http.ContentType;
 

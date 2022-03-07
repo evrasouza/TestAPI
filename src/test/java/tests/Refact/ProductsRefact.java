@@ -12,10 +12,10 @@ import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
-import Core.BaseTest;
 import Factory.LoginDataFactory;
 import Factory.ProductDataFactory;
-import POJO.ProductsPojo;
+import Pojo.ProductsPojo;
+import Utils.BaseTest;
 import io.restassured.RestAssured;
 import io.restassured.specification.FilterableRequestSpecification;
 

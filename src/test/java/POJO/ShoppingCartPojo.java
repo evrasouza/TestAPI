@@ -1,4 +1,4 @@
-package POJO;
+package Pojo;
 
 public class ShoppingCartPojo {
 	

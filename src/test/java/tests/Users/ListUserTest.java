@@ -9,7 +9,7 @@ import static org.hamcrest.CoreMatchers.notNullValue;
 import org.junit.Before;
 import org.junit.Test;
 
-import Core.BaseTest;
+import Utils.BaseTest;
 import Utils.UserUtil;
 
 public class ListUserTest extends BaseTest{

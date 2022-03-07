@@ -10,9 +10,9 @@ import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
-import Core.BaseTest;
 import Factory.UserDataFactory;
-import POJO.UsersPojo;
+import Pojo.UsersPojo;
+import Utils.BaseTest;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class UsersRefact extends BaseTest{

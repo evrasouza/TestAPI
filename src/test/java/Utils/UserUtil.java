@@ -3,9 +3,8 @@ package Utils;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.equalTo;
 
-import Core.BaseTest;
 import Factory.UserDataFactory;
-import POJO.UsersPojo;
+import Pojo.UsersPojo;
 
 public class UserUtil extends BaseTest{
 	

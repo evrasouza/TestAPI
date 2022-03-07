@@ -4,8 +4,8 @@ import static io.restassured.RestAssured.given;
 
 import org.junit.Test;
 
-import Core.BaseTest;
-import POJO.LoginPojo;
+import Pojo.LoginPojo;
+import Utils.BaseTest;
 import io.restassured.RestAssured;
 
 public class Login extends BaseTest {

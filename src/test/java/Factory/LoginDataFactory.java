@@ -3,9 +3,9 @@ package Factory;
 import static io.restassured.RestAssured.*;
 import static org.hamcrest.CoreMatchers.*;
 
-import Core.BaseTest;
-import POJO.LoginPojo;
-import POJO.UsersPojo;
+import Pojo.LoginPojo;
+import Pojo.UsersPojo;
+import Utils.BaseTest;
 import io.restassured.RestAssured;
 
 public class LoginDataFactory extends BaseTest{
